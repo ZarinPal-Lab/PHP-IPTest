@@ -117,8 +117,8 @@ echo '<div class="Content">
 	<fieldset>
 		<legend>1.  ماژولهای مورد نياز</legend>';
 echo '<div style="margin-top:10px; direction:rtl">آيا ماژولهای زير در PHP شما نصب هستند؟</div>';
-echo '<div style="margin-top:10px; direction:ltr"> soap : ' . ((extension_loaded('soap')) ? '<span style="color:#090"> نصب است</span>' : '<span style="color:#c00"> نصب نيست</span>') . '</div>';
-echo '<div style="margin-top:10px; direction:ltr"> openssl : ' . ((extension_loaded('openssl')) ? '<span style="color:#090"> نصب است</span>' : '<span style="color:#c00"> نصب نيست</span>') . '</div>';
+echo '<div style="margin-top:10px; direction:ltr"> soap : '.((extension_loaded('soap')) ? '<span style="color:#090"> نصب است</span>' : '<span style="color:#c00"> نصب نيست</span>').'</div>';
+echo '<div style="margin-top:10px; direction:ltr"> openssl : '.((extension_loaded('openssl')) ? '<span style="color:#090"> نصب است</span>' : '<span style="color:#c00"> نصب نيست</span>').'</div>';
 echo '</fieldset>';
 
 echo '<fieldset>
@@ -131,20 +131,19 @@ if (extension_loaded('curl')) {
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_exec($ch);
     curl_close($ch);
-    echo "</span></div>";
+    echo '</span></div>';
 } else {
     echo '<div class="error">خطا در فراخوانی curl.</div>';
 }
 
-
 if (function_exists('fsockopen')) {
     echo '<div style="margin-top:10px; direction:ltr"> fsockopen : <span style="color:#090"> ';
-    $url     = parse_url('http://www.zarinpal.com/labs/TestIP');
+    $url = parse_url('http://www.zarinpal.com/labs/TestIP');
     $content = '';
-    $fp = fsockopen($url['host'], 80, $err_num, $err_msg, 30) or die("Socket-open failed--error: " . $err_num . " " . $err_msg);
-    fputs($fp, "GET /$url[path] HTTP/1.0\n");
-    fputs($fp, "Connection: close\n\n");
-    
+    $fp = fsockopen($url['host'], 80, $err_num, $err_msg, 30) or die('Socket-open failed--error: '.$err_num.' '.$err_msg);
+    fwrite($fp, "GET /$url[path] HTTP/1.0\n");
+    fwrite($fp, "Connection: close\n\n");
+
     while (!feof($fp)) {
         $content .= fgets($fp, 128);
     }
@@ -186,24 +185,24 @@ echo '</fieldset>';
 <?php
 
 if (isset($_POST['PayRequestSubmit'])) {
-    $MerchantID  = $_POST['mid']; //Required
-    $Amount      = $_POST['price']; //Amount will be based on Toman  - Required
+    $MerchantID = $_POST['mid']; //Required
+    $Amount = $_POST['price']; //Amount will be based on Toman  - Required
     $Description = 'توضیحات تراکنش تستی'; // Required
-    $Email       = 'UserEmail@Mail.Com'; // Optional
-    $Mobile      = '09123456789'; // Optional
-    $CallbackURL = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']; // Required
+    $Email = 'UserEmail@Mail.Com'; // Optional
+    $Mobile = '09123456789'; // Optional
+    $CallbackURL = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; // Required
 
     try {
         $client = @new soapclient('https://de.zarinpal.com/pg/services/WebGate/wsdl');
-        $result = $client->PaymentRequest(array(
-            'MerchantID' => $MerchantID,
-            'Amount' => $Amount,
+        $result = $client->PaymentRequest([
+            'MerchantID'  => $MerchantID,
+            'Amount'      => $Amount,
             'Description' => $Description,
-            'Email' => $Email,
-            'Mobile' => $Mobile,
-            'CallbackURL' => $CallbackURL
-        ));
-        
+            'Email'       => $Email,
+            'Mobile'      => $Mobile,
+            'CallbackURL' => $CallbackURL,
+        ]);
+
         //Redirect to URL You can do it also by creating a form
         switch ($result->Status) {
             case -1:
@@ -219,18 +218,16 @@ if (isset($_POST['PayRequestSubmit'])) {
                 $ERR = 'سطح تایید پذیرنده پایین تر از سطح نقره ای است';
                 break;
             default:
-                $ERR = 'کد خطا : ' . $result->Status;
+                $ERR = 'کد خطا : '.$result->Status;
         }
         if ($result->Status == 100) {
-            echo '<script type="text/javascript">window.location = "https://www.zarinpal.com/pg/StartPay/' . $result->Authority . '";</script>';
+            echo '<script type="text/javascript">window.location = "https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'";</script>';
         } else {
-            echo '<div id="flashMessage" class="error-msg"> کد خطا  : ' . $result->Status . '<br>علت خطا : ' . $ERR . '</div>';
+            echo '<div id="flashMessage" class="error-msg"> کد خطا  : '.$result->Status.'<br>علت خطا : '.$ERR.'</div>';
         }
-    }
-    catch (SoapFault $e) {
+    } catch (SoapFault $e) {
         echo '<div class="error">خطا در فراخوانی وب‌سرويس.</div>';
     }
-    
 }
 ?>
 	</div>
