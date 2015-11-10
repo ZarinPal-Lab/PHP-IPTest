@@ -173,7 +173,7 @@ echo '</fieldset>';
 			<div style="text-align:center; font: 14px/28px ; direction:rtl">
 			مرچنت کد دریافتی از زرین پال:
 			</br></br>
-			<input type="text"   value="11111111-1111-1111-1111-111111111111"  maxlength="36" name="mid" class="input-eng" style="width:220px;!important;direction:ltr;">
+			<input type="text"   placeholder="11111111-1111-1111-1111-111111111111" required  maxlength="36" name="mid" class="input-eng" style="width:220px;!important;direction:ltr;">
 			</br></br>
 			مبلغ تراکنش (به تومان):
 			</br></br>
