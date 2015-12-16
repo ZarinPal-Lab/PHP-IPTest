@@ -127,7 +127,7 @@ echo '<div style="margin:10px 0; direction:rtl">بررسی آدرس IP</div>';
 
 if (extension_loaded('curl')) {
     echo '<div style="margin-top:10px; direction:ltr"> curl : <span style="color:#090"> ';
-    $ch = curl_init('http://www.zarinpal.com/labs/TestIP');
+    $ch = curl_init('https://www.zarinpal.com/labs/TestIP');
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_exec($ch);
     curl_close($ch);
@@ -138,10 +138,12 @@ if (extension_loaded('curl')) {
 
 if (function_exists('fsockopen')) {
     echo '<div style="margin-top:10px; direction:ltr"> fsockopen : <span style="color:#090"> ';
-    $url = parse_url('http://www.zarinpal.com/labs/TestIP');
+    $url = parse_url('https://www.zarinpal.com/labs/TestIP');
     $content = '';
-    $fp = fsockopen($url['host'], 80, $err_num, $err_msg, 30) or die('Socket-open failed--error: '.$err_num.' '.$err_msg);
-    fwrite($fp, "GET /$url[path] HTTP/1.0\n");
+    $fp = fsockopen('tls://' . $url['host'], 443, $err_num, $err_msg, 30) or die('Socket-open failed--error: '.$err_num.' '.$err_msg);
+	
+    fwrite($fp, "GET $url[path] HTTP/1.1\r\n");
+    fwrite($fp, "Host: www.zarinpal.com\r\n");
     fwrite($fp, "Connection: close\n\n");
 
     while (!feof($fp)) {
@@ -157,7 +159,7 @@ if (function_exists('fsockopen')) {
 
 if (function_exists('file_get_contents')) {
     echo '<div style="margin-top:10px; direction:ltr"> file_get_contents : <span style="color:#090"> ';
-    $content = file_get_contents('http://www.zarinpal.com/labs/TestIP');
+    $content = file_get_contents('https://www.zarinpal.com/labs/TestIP');
     preg_match('/(\d+)\.(\d+)\.(\d+)\.(\d+)/', $content, $matches);
     echo $matches[0];
     echo '</span></div>';
