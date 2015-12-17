@@ -140,8 +140,8 @@ if (function_exists('fsockopen')) {
     echo '<div style="margin-top:10px; direction:ltr"> fsockopen : <span style="color:#090"> ';
     $url = parse_url('https://www.zarinpal.com/labs/TestIP');
     $content = '';
-    $fp = fsockopen('tls://' . $url['host'], 443, $err_num, $err_msg, 30) or die('Socket-open failed--error: '.$err_num.' '.$err_msg);
-	
+    $fp = fsockopen('tls://'.$url['host'], 443, $err_num, $err_msg, 30) or die('Socket-open failed--error: '.$err_num.' '.$err_msg);
+
     fwrite($fp, "GET $url[path] HTTP/1.1\r\n");
     fwrite($fp, "Host: www.zarinpal.com\r\n");
     fwrite($fp, "Connection: close\n\n");
