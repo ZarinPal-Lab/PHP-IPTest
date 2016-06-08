@@ -129,10 +129,10 @@ echo '<div class="Content">
 	<fieldset>
 		<legend>1.  ماژولهای مورد نياز</legend>';
 echo '<div style="margin-top:10px; direction:rtl">آيا ماژولهای زير در PHP شما نصب هستند؟</div>';
-echo '<div style="margin-top:10px; direction:ltr"> soap : ' . ((extension_loaded('soap')) ? '<span style="color:#090"> نصب است</span>' : '<span style="color:#c00"> نصب نيست</span>') . '</div>';
-echo '<div style="margin-top:10px; direction:ltr"> openssl : ' . ((extension_loaded('openssl')) ? '<span style="color:#090"> نصب است</span>' : '<span style="color:#c00"> نصب نيست</span>') . '</div>';
-echo '<div style="margin-top:10px; direction:rtl">PHP Version :  ' . @phpversion(); echo '</div>';
-if( @phpversion() < 5.4){
+echo '<div style="margin-top:10px; direction:ltr"> soap : '.((extension_loaded('soap')) ? '<span style="color:#090"> نصب است</span>' : '<span style="color:#c00"> نصب نيست</span>').'</div>';
+echo '<div style="margin-top:10px; direction:ltr"> openssl : '.((extension_loaded('openssl')) ? '<span style="color:#090"> نصب است</span>' : '<span style="color:#c00"> نصب نيست</span>').'</div>';
+echo '<div style="margin-top:10px; direction:rtl">PHP Version :  '.@phpversion(); echo '</div>';
+if (@phpversion() < 5.4) {
     echo '</br> <div   class="error-msg"> نسخه PHP شما قدیمی است ، لطفا از پشتیبانی هاست خود بخواهید تا نسخه  PHP سرور شما را حداقل به 5.4 ارتقا دهد </div>';
 }
 echo '</fieldset>';
@@ -156,7 +156,7 @@ if (function_exists('fsockopen')) {
     echo '<div style="margin-top:10px; direction:ltr"> fsockopen : <span style="color:#090"> ';
     $url = parse_url('https://www.zarinpal.com/labs/TestIP');
     $content = '';
-    $fp = fsockopen('tls://' . $url['host'], 443, $err_num, $err_msg, 30) or die('Socket-open failed--error: ' . $err_num . ' ' . $err_msg);
+    $fp = fsockopen('tls://'.$url['host'], 443, $err_num, $err_msg, 30) or die('Socket-open failed--error: '.$err_num.' '.$err_msg);
 
     fwrite($fp, "GET $url[path] HTTP/1.1\r\n");
     fwrite($fp, "Host: www.zarinpal.com\r\n");
@@ -210,19 +210,19 @@ if (isset($_POST['PayRequestSubmit'])) {
     $Description = 'توضیحات تراکنش تستی'; // Required
     $Email = 'UserEmail@Mail.Com'; // Optional
     $Mobile = '09123456789'; // Optional
-    $CallbackURL = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']; // Required
+    $CallbackURL = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; // Required
 
     try {
         $client = @new soapclient('https://www.zarinpal.com/pg/services/WebGate/wsdl');
         $result = $client->PaymentRequest(
-            array(
-                'MerchantID' => $MerchantID,
-                'Amount' => $Amount,
+            [
+                'MerchantID'  => $MerchantID,
+                'Amount'      => $Amount,
                 'Description' => $Description,
-                'Email' => $Email,
-                'Mobile' => $Mobile,
+                'Email'       => $Email,
+                'Mobile'      => $Mobile,
                 'CallbackURL' => $CallbackURL,
-            ));
+            ]);
         //Redirect to URL You can do it also by creating a form
         switch ($result->Status) {
             case -1:
@@ -238,12 +238,12 @@ if (isset($_POST['PayRequestSubmit'])) {
                 $ERR = 'سطح تایید پذیرنده پایین تر از سطح نقره ای است';
                 break;
             default:
-                $ERR = 'کد خطا : ' . $result->Status;
+                $ERR = 'کد خطا : '.$result->Status;
         }
         if ($result->Status == 100) {
-            echo '<script type="text/javascript">window.location = "https://www.zarinpal.com/pg/StartPay/' . $result->Authority . '";</script>';
+            echo '<script type="text/javascript">window.location = "https://www.zarinpal.com/pg/StartPay/'.$result->Authority.'";</script>';
         } else {
-            echo '<div id="flashMessage" class="error-msg"> کد خطا  : ' . $result->Status . '<br>علت خطا : ' . $ERR . '</div>';
+            echo '<div id="flashMessage" class="error-msg"> کد خطا  : '.$result->Status.'<br>علت خطا : '.$ERR.'</div>';
         }
     } catch (SoapFault $e) {
         echo '<div class="error">خطا در فراخوانی وب‌سرويس.</div>';
