@@ -213,7 +213,7 @@ if (isset($_POST['PayRequestSubmit'])) {
     $CallbackURL = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']; // Required
 
     try {
-        $client = @new soapclient('https://de.zarinpal.com/pg/services/WebGate/wsdl');
+        $client = @new soapclient('https://www.zarinpal.com/pg/services/WebGate/wsdl');
         $result = $client->PaymentRequest(
             array(
                 'MerchantID' => $MerchantID,
