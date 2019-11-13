@@ -146,6 +146,9 @@ if (extension_loaded('curl')) {
     $ch = curl_init('https://www.zarinpal.com/labs/TestIP');
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_exec($ch);
+    if (curl_error($ch)) {
+        echo curl_error($ch);
+    }
     curl_close($ch);
     echo '</span></div>';
 } else {
@@ -188,7 +191,7 @@ echo '</fieldset>';
 <fieldset>
     <legend>3. تست انجام تراکنش</legend>
     <form name="form1" method="POST">
-        <div style="text-align:center; font: 14px/28px ; direction:rtl">
+        <div style="text-align:center; font-size: 14px ; direction:rtl">
             مرچنت کد دریافتی از زرین پال:
             </br></br>
             <input type="text" placeholder="11111111-1111-1111-1111-111111111111" required maxlength="36" name="mid"
